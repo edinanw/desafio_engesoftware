@@ -33,8 +33,9 @@ services:
         container_name: php
         working_dir: /application
         command: bash -c "
+            composer update
             php artisan migrate 
-            && php artisan passport:install
+            php artisan passport:install
             "
         volumes:
             - ./backend:/application
