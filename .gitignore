@@ -1,1 +1,5 @@
 .idea
+
+/vendor/
+/frontend/node_modules/
+dockerfile.
