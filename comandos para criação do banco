@@ -5,7 +5,10 @@ docker run --name=postgres -d -e POSTGRES_PASSWORD=1234 postgres
 docker exec -it mysql mysql -u root -p
 grant all privileges on *.* to 'root'@'%';
 
+docker-compose down
+docker-compose up -d
 docker exec -it php php artisan migrate
+docker exec -it php php artisan passport:install
 
 create database desafio;
  

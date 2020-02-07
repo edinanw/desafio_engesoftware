@@ -14,8 +14,20 @@ class AuthController extends Controller {
     private $unauth = 401;
     private $error = 400;
 
+    public function __construct(){
+        header('Access-Control-Allow-Origin: *');
+		header('Access-Control-Allow-Methods: *');		
+    }
+
     public function register(Request $request) {    
-        $validator = Validator::make($request->all(),[ 
+        $data=json_decode($request->getContent(),1);
+        $chk=User::where('email',$data['email'])->count();
+        
+        if($chk>0){            
+            return response()->json(['error'=>true,"message"=>"Email já cadastrado!"], 400);                        
+        }
+        //var_dump($data);
+        $validator = Validator::make($data,[ 
             'name' => 'required',
             'email' => 'required|email',
             'password' => 'required',  
@@ -26,13 +38,11 @@ class AuthController extends Controller {
             return response()->json(['error'=>$validator->errors()], 401);                        
         }
 
-        $input = $request->all();  
-        $input['password'] = bcrypt($input['password']);
-        $user = User::create($input); 
+        $data['password'] = bcrypt($data['password']);
+        $user = User::create($data); 
         $success['token'] =  $user->createToken('auth')->accessToken;
         return response()->json(['success'=>$success], $this->ok); 
     }
-
 
     public function login(){
         if(Auth::attempt(['email' => request('email'), 'password' => request('password')])){
@@ -41,15 +51,16 @@ class AuthController extends Controller {
             $success['token'] =  $user->createToken('auth')-> accessToken; 
             return response()->json(['success' => $success], $this->ok); 
         } else{ 
-            return response()->json(['error'=>'Unauthenticated'], 401); 
+            return response()->json(['error'=>'Usu?rio ou senha incorreto'], 401); 
         } 
     }
   
-    public function user() {
+    public function token() {
         $user = Auth::user();
-       /* if(!$user){
-            return response()->json(['error' => 'Usuário não logado'], $this->unauth,[],JSON_PRETTY_PRINT); 
-        }*/
+        var_dump($user);
         return response()->json(['success' => $user], $this->ok); 
     }
+
+
+
 } 

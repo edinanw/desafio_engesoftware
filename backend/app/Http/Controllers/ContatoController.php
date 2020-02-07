@@ -35,7 +35,8 @@ class ContatoController extends Controller{
     }  
 
     public function store(Request $req){
-        $validator = Validator::make($req->all(),[ 
+		$data=json_decode($request->getContent(),1);
+        $validator = Validator::make($data,[ 
             'nome' => 'required',
             'email' => 'required|email',
             'telefone' => 'required',  
@@ -46,10 +47,10 @@ class ContatoController extends Controller{
             return response()->json(['error'=>$validator->errors()], 400);                        
         }
         $cont= new Contato;
-        $cont->nome = $req->input('nome');
-        $cont->telefone = $req->input('telefone');
-        $cont->email = $req->input('email');
-        $cont->empresa = $req->input('empresa');
+        $cont->nome = $data['nome'];
+        $cont->telefone = $data['telefone'];
+        $cont->email = $data['email'];
+        $cont->empresa = $data['empresa'];
         if($cont->save()){
             return $cont;
         }
@@ -61,7 +62,8 @@ class ContatoController extends Controller{
         if (!$id) {
             return response()->json(['error'=>"Registro inválido!"], 400);                        
         }
-        $validator = Validator::make($req->all(),[ 
+		$data=json_decode($request->getContent(),1);
+        $validator = Validator::make($data,[ 
             'nome' => 'required',
             'email' => 'required|email',
             'telefone' => 'required',  
@@ -74,10 +76,10 @@ class ContatoController extends Controller{
 
         
         $cont=Contato::find($id);
-        $cont->nome = $req->input('nome');  
-        $cont->telefone = $req->input('telefone');
-        $cont->email = $req->input('email');
-        $cont->empresa = $req->input('empresa');
+        $cont->nome = $data['nome'];
+        $cont->telefone = $data['telefone'];
+        $cont->email = $data['email'];
+        $cont->empresa = $data['empresa'];
         if($cont->save()){
             return $cont;
         }

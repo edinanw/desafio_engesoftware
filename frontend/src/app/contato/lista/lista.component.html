@@ -1,0 +1,39 @@
+<div class="container">
+        
+
+    <div class="row">
+        <div class="col-xs-1-12">
+            <div class="form-group">
+                <label for="filtro">Filtrar</label>
+                <input type="text" class="form-control" name="filtro" [(ngModel)]="filtro">
+                <small id="helpId" class="form-text text-muted">Help text</small>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-xs-1-12">
+            
+            <div *ngIf="contatos.length>0;else semregistro">
+                <table class="table table-striped table-inverse table-responsive">
+                    <thead class="thead-inverse">
+                        <tr>
+                            <th>Nome</th>
+                            <th>Telefone</th>
+                            <th>E-mail</th>
+                            <th>Empresa</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let item of contatos | filter : item : filtro;let i = index " >
+                        <td>{{item.nome}}</td>
+                        <td>{{item.telefone}}</td>
+                        <td>{{item.email}}</td>
+                        <td>{{item.empresa}}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div> 
+        </div>
+    </div>
+    <ng-template #semregistro>Nenhum registro encontrado</ng-template>
+</div>

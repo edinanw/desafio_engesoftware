@@ -1,0 +1,20 @@
+<div class="row">
+    <div class="col-lg-4"></div>
+    <div class="col-lg-4">
+    <br>
+    <br>
+    <br>
+        <div class="card">
+            <div class="card-body">
+                <b>Email</b>
+                <input type="text" name="email" [(ngModel)]="email" class="form-control" required>
+                <b>Senha</b>
+                <input type="password" name="senha" [(ngModel)]="senha" class="form-control" required>
+            </div>
+            <div class="card-footer">
+                <a [routerLink]="['/registrar']" class="float-left btn btn-secondary">Registrar</a>                
+                <button type="button" class="float-right btn btn-primary" (click)="logar()">Logar</button>
+            </div>
+        </div>
+    </div>
+</div>

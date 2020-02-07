@@ -1,0 +1,30 @@
+<nav class="navbar navbar-expand-sm navbar-dark bg-primary"></nav>
+<div class="content">
+    <div class="row">
+        <div class="col-lg-4"></div>
+        <div class="col-lg-4">
+        <br>
+        <br>
+        <br>
+            <div class="card">
+                <div clas="card-header">
+                    <h4 class="card-title"> Cadastrar novo contato</h4>
+                </div>
+                <div class="card-body">
+                    <b>Nome</b>
+                    <input type="text" name="email" [(ngModel)]="nome" class="form-control" required>
+                    <b>Telefone</b>
+                    <input type="tel" name="telefone" [(ngModel)]="telefone" class="form-control" required>
+                    <b>E-mail</b>
+                    <input type="email" name="email" [(ngModel)]="email" class="form-control" required email>
+                    <b>Empresa</b>
+                    <input type="text" name="empresa" [(ngModel)]="empresa" class="form-control" required>
+                </div>
+                <div class="card-footer">
+                    
+                    <button type="button" class="float-right btn btn-primary" (click)="salvar()">Salvar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

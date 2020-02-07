@@ -1,12 +1,12 @@
 version: '2'
+
 networks:
-    desafio:   
-        
+    desafio:
 services:
     mysql:
         image: mysql
         container_name: mysql
-        command: --default-authentication-plugin=mysql_native_password
+        command: "--default-authentication-plugin=mysql_native_password"
         ports:
             - 3307:3306
         environment:
@@ -16,6 +16,7 @@ services:
             desafio:
                 aliases: 
                     - mysql
+                    
     webserver:
         image: nginx:alpine
         container_name: nginx
@@ -27,28 +28,29 @@ services:
             - "8000:80"
         networks:
             desafio:
-        
+                aliases: 
+                    - webserver
+                    
     php-fpm:
         build: phpdocker/php-fpm
         container_name: php
         working_dir: /application
-        command: bash -c "
-            composer update
-            php artisan migrate 
-            php artisan passport:install
-            "
         volumes:
             - ./backend:/application
-            - ./phpdocker/php-fpm/php-ini-overrides.ini:/etc/php/7.3/fpm/conf.d/99-overrides.ini
+            - ./phpdocker/php-fpm/php-ini-overrides.ini:/etc/php/7.3/fpm/conf.d/99-overrides.ini        
         networks:
             desafio:
-        
-    angular: 
-        container_name: angular  
-        build: ./frontend
-        volumes: 
-            - './frontend:/usr/src/app' 
-        ports: 
-             - '6699:9966' # Port mapping
-        command: > 
-            bash -c "npm install && ng serve --host 0.0.0.0 --port 9966"
+                aliases:
+                    - php-fpm
+    # angular:
+        # container_name: angular  
+        # build: ./frontend
+        # volumes:
+            # - './frontend:/usr/src/app' 
+        # ports:
+            # - '4200:4200'
+        # command: bash -c "npm install && ng serve --host angular --port 4200"        
+        # networks:
+            # desafio:
+                # aliases: 
+                    # - angular
