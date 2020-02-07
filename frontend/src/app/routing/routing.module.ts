@@ -1,3 +1,4 @@
+import { LogoffComponent } from './../logoff/logoff.component';
 import { AuthGuard } from './../auth.guard';
 import { AppComponent } from './../app.component';
 import { ContatoComponent } from './../contato/contato.component';
@@ -13,6 +14,7 @@ const routes: Routes = [
   
   { path: '',redirectTo:'contato', pathMatch: 'full'},
   { path: 'login', component: LoginComponent },
+  { path: 'logoff', component: LogoffComponent },
   { path: 'registrar', component: RegistrarComponent },
   { path: 'contato', component:ContatoComponent, canActivate: [AuthGuard]}, 
   { path: 'contato/novo', component:CadastrarComponent, canActivate: [AuthGuard] },

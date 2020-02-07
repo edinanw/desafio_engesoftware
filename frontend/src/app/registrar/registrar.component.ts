@@ -24,8 +24,7 @@ export class RegistrarComponent implements OnInit {
 
   cadastrar(){
     var headers =  new HttpHeaders({ 
-      'Content-Type': 'text/plain',
-      'Accept': 'application/json'
+      'Content-Type': 'text/plain'
     });
 
     var dados = {"name":this.nome,"email":this.email,"password":this.senha,"c_password": this.c_senha};
@@ -33,12 +32,12 @@ export class RegistrarComponent implements OnInit {
       (data)=>{
         this.resp=data.body;
         if (!isUndefined(this.resp.success)) {
-
-          this.authservice.setToken(this.resp.success);          
+          console.log(this.resp.success);
+          this.authservice.setToken(this.resp.success.token);          
 
           alert("Usuário cadastrado com sucesso");
 
-          this.router.navigate(['/home']);
+          this.router.navigate(['/']);
 
         }else{
           console.log(data);

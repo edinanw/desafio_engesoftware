@@ -22,10 +22,10 @@ export class AuthInterceptor implements HttpInterceptor {
                 //const token=this.auth.checkToken(currentUser);
                 const token=currentUser;
                 if(token){           
+                    console.log(token);
                     req = req.clone({
                         setHeaders: {
-                            'Authorization': 'Bearer ' + token,
-                            'Content-Type': 'text/plain'
+                            'Authorization': 'Bearer ' + token
                         }
                     });
                 }else{

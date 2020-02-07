@@ -9,9 +9,8 @@ use Validator;
 class ContatoController extends Controller{
 
     public function __construct(){
-        if(!Auth::user()){
-           // throw new \HttpException(401,"Usuário não logado!");
-        }
+		header('Access-Control-Allow-Origin: *');
+		header('Access-Control-Allow-Methods: GET, POST, PUT, DELETE, OPTIONS, HEAD');		
     }
 
     public function index(){

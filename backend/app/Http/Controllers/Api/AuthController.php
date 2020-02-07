@@ -44,14 +44,15 @@ class AuthController extends Controller {
         return response()->json(['success'=>$success], $this->ok); 
     }
 
-    public function login(){
-        if(Auth::attempt(['email' => request('email'), 'password' => request('password')])){
+    public function login(Request $request){
+		$data=json_decode($request->getContent());
+        if(Auth::attempt(['email' => $data->email, 'password' => $data->password])){
             $user = Auth::user();             
             
             $success['token'] =  $user->createToken('auth')-> accessToken; 
             return response()->json(['success' => $success], $this->ok); 
         } else{ 
-            return response()->json(['error'=>'Usu?rio ou senha incorreto'], 401); 
+            return response()->json(['error'=>'Usu?rio ou senha incorreto',$data], 401); 
         } 
     }
   

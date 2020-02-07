@@ -21,6 +21,7 @@ import { ContatoComponent } from './contato/contato.component';
 import { EditarComponent } from './contato/editar/editar.component';
 import { CadastrarComponent } from './contato/cadastrar/cadastrar.component';
 import { ListaComponent } from './contato/lista/lista.component';
+import { LogoffComponent } from './logoff/logoff.component';
 
 @NgModule({
   declarations: [
@@ -32,7 +33,8 @@ import { ListaComponent } from './contato/lista/lista.component';
     EditarComponent,
     CadastrarComponent,    
     EditarComponent,
-    ContatoComponent
+    ContatoComponent,
+    LogoffComponent
   ],
   imports: [
     BrowserModule,

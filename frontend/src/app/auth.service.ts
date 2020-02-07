@@ -90,8 +90,8 @@ export class AuthService {
         map(data => {
           this.resp = data;
           if (this.resp.body.success) {
-            this.setToken(this.resp.body.success);
-            this.router.navigate(['/home']);
+            this.setToken(this.resp.body.success.token);
+            this.router.navigate(['/']);
           }else if (this.resp.body.error) {
             alert(this.resp.body.error);
           } else {
@@ -103,5 +103,10 @@ export class AuthService {
       ).subscribe();
 
     return this.resp;
+  }
+
+  logoff(){
+    sessionStorage.clear();
+  
   }
 }
