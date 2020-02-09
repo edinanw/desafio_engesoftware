@@ -14,28 +14,14 @@ class AuthController extends Controller {
     private $unauth = 401;
     private $error = 400;
 
-    public function __construct(){
-        header('Access-Control-Allow-Origin: *');
-		header('Access-Control-Allow-Methods: *');		
-    }
+   
 
     public function register(Request $request) {    
         $data=json_decode($request->getContent(),1);
         $chk=User::where('email',$data['email'])->count();
         
         if($chk>0){            
-            return response()->json(['error'=>true,"message"=>"Email já cadastrado!"], 400);                        
-        }
-        //var_dump($data);
-        $validator = Validator::make($data,[ 
-            'name' => 'required',
-            'email' => 'required|email',
-            'password' => 'required',  
-            'c_password' => 'required|same:password',
-        ]);   
-
-        if ($validator->fails()){
-            return response()->json(['error'=>$validator->errors()], 401);                        
+            return response()->json(['error'=>"Email já cadastrado!"], 400);                        
         }
 
         $data['password'] = bcrypt($data['password']);
@@ -47,9 +33,8 @@ class AuthController extends Controller {
     public function login(Request $request){
 		$data=json_decode($request->getContent());
         if(Auth::attempt(['email' => $data->email, 'password' => $data->password])){
-            $user = Auth::user();             
-            
-            $success['token'] =  $user->createToken('auth')-> accessToken; 
+            $user = Auth::user();
+            $success['token'] =  $user->createToken('auth')-> accessToken;
             return response()->json(['success' => $success], $this->ok); 
         } else{ 
             return response()->json(['error'=>'Usu?rio ou senha incorreto',$data], 401); 

@@ -17,12 +17,11 @@ export class AuthInterceptor implements HttpInterceptor {
 
         if (req.url.indexOf('login') === -1 && req.url.indexOf('register') === -1) {            
             if (currentUser) {
-                console.log(req.url);
+                
                 
                 //const token=this.auth.checkToken(currentUser);
                 const token=currentUser;
                 if(token){           
-                    console.log(token);
                     req = req.clone({
                         setHeaders: {
                             'Authorization': 'Bearer ' + token
@@ -34,7 +33,26 @@ export class AuthInterceptor implements HttpInterceptor {
             }
         }
 
-        return next.handle(req);
+        return next.handle(req).pipe(map(
+            (data) => {
+                if (data.type === HttpEventType.Sent) {
+                    //console.log('iniciou');
+                    this.loader.show();
+                }
+
+                if (data.type === HttpEventType.Response) {
+                    //console.log('respondeu');
+                    this.loader.hide();
+                }
+                
+                return data;
+            }
+        ),catchError((err: HttpErrorResponse) => {
+            alert('Erro ao efeuar a operação. \nDetalhes do Erro:' + err.error.error);
+            console.log(err);
+            this.loader.hide();
+            return throwError(err.error.error);
+        }));
         
     }
 }

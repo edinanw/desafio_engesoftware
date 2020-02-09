@@ -1,37 +1,46 @@
 import { AuthService } from './../auth.service';
-import { map, catchError } from 'rxjs/operators';
 import { Router, RouterLink } from '@angular/router';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
-import { throwError, of } from 'rxjs';
+
+import { FormBuilder, Validators, AbstractControl, ValidationErrors } from '@angular/forms';
 import { isUndefined } from 'util';
 
 
 @Component({
   selector: 'app-registrar',
   templateUrl: './registrar.component.html',
-  styleUrls: ['./registrar.component.css']
+  styleUrls: ['./registrar.component.scss']
 })
 export class RegistrarComponent implements OnInit {
-  public nome;
-  public email;
-  public senha;
-  public c_senha;
+  
+  public form;
   private resp;
-  constructor(private httpC: HttpClient, private router: Router, private authservice: AuthService) { }
+
+  constructor(private httpC: HttpClient, private router: Router, private authservice: AuthService) { 
+    this.form=new FormBuilder().group({
+      "nome":['',Validators.required],
+      "email":['',[Validators.required,Validators.email]],
+      "password":['',Validators.required],
+      "c_password": ['',[Validators.required, this.checkPasswords('password')]]
+    });
+  }
 
   ngOnInit() {}
 
   cadastrar(){
-    var headers =  new HttpHeaders({ 
-      'Content-Type': 'text/plain'
-    });
 
-    var dados = {"name":this.nome,"email":this.email,"password":this.senha,"c_password": this.c_senha};
-    this.httpC.post('http://localhost:8000/api/register',dados, { observe: 'response', headers:headers}).subscribe(
+    if(!this.form.valid){
+      alert('verifique os campos do formulário!');
+      return false;
+    }
+
+    const dados = {"name":this.form.controls['nome'].value,"email":this.form.controls['email'].value,"password":this.form.controls['password'].value};
+
+    this.httpC.post('http://localhost:8000/api/register',dados).subscribe(
       (data)=>{
-        this.resp=data.body;
-        if (!isUndefined(this.resp.success)) {
+        this.resp=data;
+        if (this.resp.success) {
           console.log(this.resp.success);
           this.authservice.setToken(this.resp.success.token);          
 
@@ -43,17 +52,13 @@ export class RegistrarComponent implements OnInit {
           console.log(data);
           alert('Erro ao efetuar a operação');
         }
-      },(err)=>{
-          
-          console.log(err);
-          if(err.error.message){
-            alert(err.error.message);
-          }else{
-            alert('Erro ao efetuar a operação');
-          }
-
-        
       });
+  }
+
+  checkPasswords(field: string) {
+    return (control: AbstractControl): ValidationErrors | null => {
+      return !!control.parent && !!control.parent.value && control.value === control.parent.controls[field].value ? null : { senha: true };
+    };
   }
 
 }

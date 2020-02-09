@@ -1,20 +1,28 @@
 import { Router } from '@angular/router';
 import { HttpHeaders, HttpClient } from '@angular/common/http';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
+import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
+
 
 @Component({
   selector: 'app-editar',
   templateUrl: './editar.component.html',
-  styleUrls: ['./editar.component.css']
+  styleUrls: ['./editar.component.scss']
 })
 export class EditarComponent implements OnInit {
-  public nome: String="";
+  @Input() id;
+  @Input() nome;
+  @Input() email;
+  @Input() telefone;
+  @Input() empresa;
+  /* public nome: String="";
   public email: String="";
   public telefone="";
   public empresa="";
+   */
   private resp;
 
-  constructor(private http:HttpClient,private router:Router) { }
+  constructor(private http:HttpClient,private router:Router,private activeModal: NgbActiveModal) { }
 
   ngOnInit() {
   }
@@ -40,11 +48,14 @@ export class EditarComponent implements OnInit {
         'Content-Type': 'text/plain'
       });
 
-      this.http.put('http://localhost:8000/api/contato',dados,{ observe: 'response', headers:headers}).subscribe(data=>{
+      this.http.put('http://localhost:8000/api/contato/'+this.id,dados,{ observe: 'response', headers:headers}).subscribe(data=>{
         this.resp=data.body;
         if(this.resp.success){
-          alert('Contato incluído com sucesso');
-          this.router.navigate(['/contato']);
+          alert('Contato alterado com sucesso');
+          
+          
+          top.location.href=this.router.url;
+          this.activeModal.close();
         }else if(this.resp.error){
           alert(this.resp.error.message);
           console.log(this.resp.error);

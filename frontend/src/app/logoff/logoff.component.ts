@@ -5,7 +5,7 @@ import { Component, OnInit } from '@angular/core';
 @Component({
   selector: 'app-logoff',
   templateUrl: './logoff.component.html',
-  styleUrls: ['./logoff.component.css']
+  styleUrls: ['./logoff.component.scss']
 })
 export class LogoffComponent{
 
