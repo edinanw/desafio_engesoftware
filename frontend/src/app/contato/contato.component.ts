@@ -100,6 +100,11 @@ export class ContatoComponent{
       })
     }
   }
+  
+  applyFilter(event: Event) {
+    const filterValue = (event.target as HTMLInputElement).value;
+    this.rowData.filter = filterValue.trim().toLowerCase();
+  }
 
 	groupHeaderClick(row) {
 		if (row.expanded) {
